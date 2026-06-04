@@ -20,7 +20,13 @@ MODEL_PATH = "model/jabu_model_float16.tflite"
 def load_interpreter():
     if not os.path.exists(MODEL_PATH):
         return None
+    # 1. Initialize
     interpreter = tflite.Interpreter(model_path=MODEL_PATH)
+    
+    # 2. Force single-threaded mode to prevent RAM spikes
+    interpreter.set_num_threads(1) 
+    
+    # 3. Allocate
     interpreter.allocate_tensors()
     return interpreter
 
